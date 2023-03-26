@@ -2,7 +2,7 @@
 
 [Example application](https://github.com/gregoriB/example-react-services-app)
 
-Provides a service injection decorator, and a `useService` hook to access the injected service.  The hook allows access to observable values, methods, and getters/setters on the service.
+Provides a service injection decorator, and a `useService` hook to access the injected service.  The hook allows access to service methods, getters/setters, and observable values.
 
 ## State management
  

@@ -1,6 +1,6 @@
 {
   "name": "react-services",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Inject global services into your React-application",
   "main": "index.js",
   "repository": {

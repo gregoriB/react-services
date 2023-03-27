@@ -1,8 +1,8 @@
-# Inject global Angular-style services into your React application.
+# Use global Angular-style services into your React application.
 
 [Example application](https://github.com/gregoriB/example-react-services-app)
 
-Provides a service injection decorator, and a `useService` hook to access the injected service.  The hook allows access to service methods, getters/setters, and observable values.
+Provides a service decorator, and a `useService` hook to access the service.  The hook allows access to service methods, getters/setters, and observable values.
 
 ## State management
  

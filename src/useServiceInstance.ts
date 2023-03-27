@@ -8,7 +8,7 @@ import { IServiceClass, IServiceInstance } from './types';
 export const useServiceInstance = (service: IServiceClass) => {
   const [instance, setInstance] = useState(null);
 
-  useEffect((): any => {
+  useEffect((): (() => void) => {
     return instances$.subscribe((instances: Map<string, IServiceInstance>) => {
       const instance = instances.get(service.name);
       if (instance) {

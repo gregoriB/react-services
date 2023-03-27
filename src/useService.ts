@@ -14,7 +14,7 @@ export const useService = (service: IServiceClass, property: string) => {
     service[property]
   );
 
-  useEffect((): any => {
+  useEffect((): (() => void) | undefined => {
     if (!injectedService) {
       return;
     }

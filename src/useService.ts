@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import { Observable, IServiceClass, useServiceContext } from "./private-api";
+import { Observable, IServiceClass } from "./private-api";
+import { useServiceInstance } from "./useServiceInstance";
 
 /**
  * Get an property value from a service.
  */
 export const useService = (service: IServiceClass, property: string) => {
-  const injectedService = useServiceContext(service);
+  const injectedService = useServiceInstance(service);
   const [injectedServiceProperty, setInjectedServiceProperty] = useState(
     service[property]
   );
 
   useEffect((): any => {
-    if (injectedService.default) {
+    if (!injectedService) {
       return;
     }
 

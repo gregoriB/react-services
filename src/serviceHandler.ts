@@ -29,6 +29,7 @@ class MutableObservable extends Observable {
  */
 class ServiceHandler {
   services$ = new MutableObservable(new Map<string, IServiceFormattedConfig>());
+  instances$ = new MutableObservable(new Map<string, IServiceInstance>());
   contexts$ = new Observable(new Map<string, ContextInstance>());
 
   constructor() {
@@ -118,6 +119,7 @@ class ServiceHandler {
     });
     // Once all services have been instantiated, we are done.
     if (!services.size) {
+      this.instances$.next(instances);
       this.contexts$.next(this.createContexts(instances));
       return;
     }
@@ -144,3 +146,4 @@ const serviceHander = new ServiceHandler();
 
 export const Service = serviceHander.Service;
 export const contexts$ = serviceHander.contexts$;
+export const instances$ = serviceHander.instances$;

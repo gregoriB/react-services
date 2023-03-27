@@ -65,7 +65,7 @@ class ServiceHandler {
    * with its dependencies and marks it as an instance.
    */
   createInstance = (service: IServiceFormattedConfig): IServiceInstance => {
-    const providersArr = Array.from(service.config.providers);
+    const providersArr = Array.from(service.config.providers.values());
     const instance = new service.cls(...providersArr);
     return instance;
   };

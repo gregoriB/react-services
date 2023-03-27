@@ -1,4 +1,4 @@
-# Use global Angular-style services into your React application.
+# Use global Angular-style services with your React application.
 
 [Example application](https://github.com/gregoriB/example-react-services-app)
 
@@ -16,7 +16,7 @@ import { Service, Observable } from 'react-services';
 @Service()
 class NameService {
     constructor() {
-        this.name$ = new Observable('');
+        this.name$ = new Observable('<insert name>');
     }
 
     setName = (name) => {
@@ -40,21 +40,24 @@ const NameInput = () => {
 }
 
 const App = () => {
-    return <GreetUser />
+    return (
+        <div >
+            <GreetUser />
+            <NameInput />
+        </div>
+    );
 }
 ```
 
 
-A `useService` hook that accepts the service and service property is provided.  Creating a custom hook for a services is very simple:
+A `useService` hook that accepts the service and service property is provided. It returns either some state or a method from the service.  Creating a custom hook for a services is very simple:
 
 ```typescript
 import { useService } from "react-services";
 import NameService from "../services/NameService";
 
 export const useNameService = (property: string) => {
-  const serviceProperty = useService(NameService, property);
-
-  return serviceProperty;
+  return useService(NameService, property);
 };
 
 ```
@@ -76,7 +79,25 @@ class NameService {
         this.someOtherService = someOtherService;
     }
 }
+
+// Or use if you prefer TypeScript
+class NameService {
+    constructor(
+        private someService: SomeService, 
+        private someOtherService: someOtherService
+    ) {}
+}
 ```
 
 
 So that's really all there is to it.  Mark your services with the `Service` decorator, and use the `useService` hook to access them.  Use observables for any service state that is going to be updated.
+
+## Caveats
+
+Right now, only classes that utilize the `@Service` decorator, can be injected.  Trying to inject anything else will cause nasty errors.  I'm hoping to eventually update this to allow injecting other things.
+
+All services are global singletons.  Utility classes and unique instances of services are not supported yet.
+
+As stated before, the provided `Observable` class should not be used for anything more than a really basic, throw-away application.  Seriously, use RxJS instead.  It's amazing.
+
+This library is untested and unproven.  Maybe I'll write out some robusts automated test and build something worthwhile with it at some point.

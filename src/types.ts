@@ -25,5 +25,5 @@ export interface IServiceFormattedConfig {
   };
 }
 export interface IServiceConfig {
-  providers: IServiceClass[];
+  providers?: IServiceClass[];
 }

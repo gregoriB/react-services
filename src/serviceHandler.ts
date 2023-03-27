@@ -133,7 +133,6 @@ class ServiceHandler {
   createContexts = (
     instances: Map<string, IServiceInstance>
   ): ContextInstances => {
-    // const instancesArr = Array.from(instances.values());
     const newContextsMap: ContextInstances = new Map();
     instances.forEach((instance: IServiceInstance, ikey: string) => {
       newContextsMap.set(ikey + "Context", createContext(instance));

@@ -6,6 +6,9 @@ import { useServiceInstance } from "./useServiceInstance";
  * Get an property value from a service.
  */
 export const useService = (service: IServiceClass, property: string) => {
+  // TODO: Look into whether or not there is any benefit to using
+  // useServiceContext here instead to get a context object, instead of
+  // using the instantiated class directly.
   const injectedService = useServiceInstance(service);
   const [injectedServiceProperty, setInjectedServiceProperty] = useState(
     service[property]

@@ -10,8 +10,10 @@ import {
 // before the components load and this hooks gets used so we don't need
 // this hack.
 const defaultContext = createContext({ default: true } as {});
+
 /**
- * Get a service with context/
+ * Get a service instance with context if available in the stored contexts,
+ * and provide the service via the useContext hook.
  */
 export const useServiceContext = (service: IServiceClass) => {
   const [context, setContext] = useState<ContextInstance>(defaultContext);

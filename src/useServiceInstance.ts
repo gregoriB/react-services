@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { instances$ } from './private-api';
 import { IServiceClass, IServiceInstance } from './types';
 
+/**
+ * Get a service instance if available in the stored instances.
+ */
 export const useServiceInstance = (service: IServiceClass) => {
   const [instance, setInstance] = useState(null);
 

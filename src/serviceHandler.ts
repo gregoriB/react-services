@@ -19,7 +19,7 @@ class MutableObservable extends Observable {
 
   mutate = (fn: Observer) => {
     fn(this._value);
-    this.notify();
+    this.notifyObservers();
   };
 }
 

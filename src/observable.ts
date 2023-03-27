@@ -1,13 +1,14 @@
-import { ISubscribeReturn, ObservedValue, Observer } from "./private-api";
+import { ObservedValue, Observer } from "./private-api";
 
 export class Observable {
   protected _observers = new Set<Observer>();
 
   constructor(protected _value: ObservedValue) {}
 
-  subscribe = (observer: Observer): ISubscribeReturn => {
+  subscribe = (observer: Observer): { unsubscribe: () => void } => {
     this.addObserver(observer);
     observer(this._value);
+
     return {
       unsubscribe: (): void => {
         this.removeObserver(observer);
@@ -17,14 +18,14 @@ export class Observable {
 
   next = (newValue: ObservedValue): void => {
     this._value = newValue;
-    this.notify();
+    this.notifyObservers();
   };
 
   protected removeObserver = (observer: Observer): void => {
     this._observers.delete(observer);
   };
 
-  protected notify = (): void => {
+  protected notifyObservers = (): void => {
     this._observers.forEach((observer: Observer) => observer(this._value));
   };
 

@@ -9,9 +9,6 @@ export type Providers = Map<string, Provider>;
 export type Observer = (val: ObservedValue) => void;
 export type ObservedValue = any;
 
-export interface ISubscribeReturn {
-  unsubscribe: () => void;
-}
 export interface IServiceClass {
   name: string;
   [key: string]: any;

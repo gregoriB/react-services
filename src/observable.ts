@@ -1,9 +1,9 @@
-import { ObservedValue, Observer } from "./private-api";
+import { ISubscribeReturn, ObservedValue, Observer } from "./private-api";
 
-export class Observable {
+export class Observable<T> {
   protected _observers = new Set<Observer>();
 
-  constructor(protected _value: ObservedValue) {}
+  constructor(protected _value: T) {}
 
   subscribe = (observer: Observer): { unsubscribe: () => void } => {
     this.addObserver(observer);
@@ -16,7 +16,7 @@ export class Observable {
     };
   };
 
-  next = (newValue: ObservedValue): void => {
+  next = (newValue: T): void => {
     this._value = newValue;
     this.notifyObservers();
   };

@@ -7,13 +7,12 @@ import {
   IServiceFormattedConfig,
   IServiceInstance,
   Observable,
-  ObservedValue,
   Observer,
   Provider
 } from "./private-api";
 
-class MutableObservable extends Observable {
-  constructor(protected _value: ObservedValue) {
+class MutableObservable<T> extends Observable<T> {
+  constructor(protected _value: T) {
     super(_value);
   }
 
@@ -29,11 +28,11 @@ class MutableObservable extends Observable {
  */
 class ServiceHandler {
   services$ = new MutableObservable(new Map<string, IServiceFormattedConfig>());
-  instances$ = new MutableObservable(new Map<string, IServiceInstance>());
+  instances$ = new Observable(new Map<string, IServiceInstance>());
   contexts$ = new Observable(new Map<string, ContextInstance>());
 
   constructor() {
-    this.services$.subscribe((services) =>
+    this.services$.subscribe((services): void =>
       this.setupServices(new Map(services))
     );
   }
@@ -53,7 +52,7 @@ class ServiceHandler {
     };
 
     return (cls: IServiceClass): void => {
-      this.services$.mutate((services) => {
+      this.services$.mutate((services): void => {
         services.set(cls.name, { cls, config: formattedConfig });
       });
     };

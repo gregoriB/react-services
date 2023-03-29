@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { instances$ } from './private-api';
-import { IServiceClass, IServiceInstance } from './types';
+import { IServiceClass } from './types';
 
 /**
  * Get a service instance if available in the stored instances.
  */
-export const useServiceInstance = (service: IServiceClass) => {
-  const [instance, setInstance] = useState(null);
+export const useServiceInstance = <T>(service: IServiceClass<T>): T => {
+  const [instance, setInstance] = useState<T>();
 
   useEffect((): (() => void) => {
-    return instances$.subscribe((instances: Map<string, IServiceInstance>) => {
+    return instances$.subscribe((instances: Map<string, T>) => {
       const instance = instances.get(service.name);
       if (instance) {
-        setInstance(instance);
+        setInstance(instance as T);
       }
     }).unsubscribe;
   }, []);

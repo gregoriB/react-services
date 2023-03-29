@@ -1,34 +1,35 @@
 import { useEffect, useState } from "react";
-import { Observable, IServiceClass } from "./private-api";
+import { IServiceClass, isSubscribable } from "./private-api";
 import { useServiceInstance } from "./useServiceInstance";
 
 /**
  * Get an property value from a service.
  */
-export const useService = (service: IServiceClass, property: string) => {
+export const useService = <T>(service: IServiceClass<T>, property: keyof T): T[keyof T] => {
   // TODO: Look into whether or not there is any benefit to using
   // useServiceContext here instead to get a context object, instead of
   // using the instantiated class directly.
-  const injectedService = useServiceInstance(service);
-  const [injectedServiceProperty, setInjectedServiceProperty] = useState(
-    service[property]
-  );
+  const injectedService = useServiceInstance<T>(service);
+  const [injectedServiceProperty, setInjectedServiceProperty] = useState<T[keyof T]>();
 
   useEffect((): (() => void) | undefined => {
     if (!injectedService) {
       return;
     }
 
-    const serviceProperty = injectedService[property];
+    const hasProperty = injectedService.hasOwnProperty(property);
 
-    if (!serviceProperty) {
+    if (!hasProperty) {
       throw new Error(`"${property}" does not exist on ${service.name}`);
     }
 
+    const serviceProperty = injectedService[property];
+
+
     // Subscribe the state to the observable value, and provide an
     // unsubscribe callback for unmount.
-    if (serviceProperty.subscribe) {
-      return (serviceProperty as Observable).subscribe(
+    if (isSubscribable(serviceProperty)) {
+      return (serviceProperty).subscribe(
         setInjectedServiceProperty
       ).unsubscribe;
     }
@@ -42,7 +43,7 @@ export const useService = (service: IServiceClass, property: string) => {
     );
 
     if (typeof serviceProperty === "function" || isGetterSetter) {
-      setInjectedServiceProperty(() => serviceProperty);
+      setInjectedServiceProperty((() => serviceProperty));
       return;
     }
 
